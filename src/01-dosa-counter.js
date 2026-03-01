@@ -31,6 +31,36 @@
  *   calculateDosaOrder("plain")
  *   // => { type: "plain", quantity: 1, pricePerDosa: 40, total: 40 }
  */
+
 export function calculateDosaOrder(type, quantity = 1, isSpicy = false) {
-  // Your code here
+    // Your code here
+    // let pricePerDosa;
+    // let total;
+    if (typeof type === "string" && typeof quantity === "number" && quantity !== NaN && quantity > 0) {
+        let dosaType = type.toLowerCase().trim()
+        let menu = {
+            "plain": 40,
+            "masala": 60,
+            "onion": 50,
+            "butter": 70,
+            "paper": 90,
+            "cheese": 80
+        }
+        // console.log(menu[dosaType] + (isSpicy?10:0));
+        // console.log((menu[dosaType] + isSpicy ? 10 : 0));
+        if (menu[dosaType]) {
+
+            return {
+                type: dosaType,
+                quantity: quantity,
+                pricePerDosa: (menu[dosaType] + (isSpicy ? 10 : 0)),
+                total: (menu[dosaType] + (isSpicy ? 10 : 0)) * quantity
+            }
+        } else {
+            return null;
+        }
+
+    } else {
+        return null;
+    }
 }

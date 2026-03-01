@@ -54,21 +54,55 @@
  *   // red and blue objects are UNCHANGED
  */
 export function mixColors(color1, color2) {
-  // Your code here
+    // Your code here
+    if (typeof color1 !== "object" || color1 === null || color2 === null || typeof color2 !== "object") {
+        return null;
+    }
+    return {
+        name: `${color1.name}-${color2.name}`,
+        r: Math.round((color1.r + color2.r)/2),
+        g: Math.round((color1.g + color2.g)/2),
+        b: Math.round((color1.b + color2.b)/2),
+    }
 }
 
 export function adjustBrightness(color, factor) {
-  // Your code here
+    // Your code here
+    if (typeof color !== "object" || color === null ||typeof factor !== "number") {
+        return null;
+    }
+    return {
+        ...color,
+        r: factor * color.r > 255 ? 255 : factor * color.r,
+        g: factor * color.g > 255 ? 255 : factor * color.g,
+        b: factor * color.b > 255 ? 255 : factor * color.b,
+    }
 }
 
 export function addToPalette(palette, color) {
-  // Your code here
+    // Your code here
+    if (!Array.isArray(palette) || palette.length === 0) {
+        return [color];
+    }
+    if (!color) {
+        return [...palette];
+    }
+    return [...palette , color];
 }
 
 export function removeFromPalette(palette, colorName) {
-  // Your code here
+    // Your code here
+    if (!Array.isArray(palette) || palette.length === 0) {
+        return [];
+    }
+    let arr = [...palette]
+    return arr.filter((e) => e.name !== colorName);
 }
 
 export function mergePalettes(palette1, palette2) {
-  // Your code here
+    // Your code here
+    let newPalette1 = Array.isArray(palette1) ? [...palette1] : [];
+    let newPalette2 = Array.isArray(palette2) ? [...palette2] : [];
+    let result = newPalette2.reduce((prev, curr) => (prev.some(e => e.name === curr.name) ? prev : [...prev, curr]), [...newPalette1]);
+    return result
 }

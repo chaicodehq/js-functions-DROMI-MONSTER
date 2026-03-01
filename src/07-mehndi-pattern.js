@@ -53,21 +53,79 @@
  *   generatePattern(3)        // => ["*", "**", "***", "**", "*"]
  */
 export function repeatChar(char, n) {
-  // Your code here
+    // Your code here
+    if (typeof char !== "string" || typeof n !== "number" || !Number.isInteger(n)) {
+        return ""
+    }
+    if (n <= 0) {
+        return "";
+    }
+    return char + repeatChar(char, n - 1);
 }
 
 export function sumNestedArray(arr) {
-  // Your code here
+    // Your code here
+    if (!Array.isArray(arr) || arr.length === 0) {
+        return 0;
+    }
+    function Sum(arr, i) {
+        if (i >= arr.length) {
+            return 0;
+        }
+        if (typeof arr[i] !== "number") {
+            return Sum(arr, i + 1)
+        } else {
+            return arr[i] + Sum(arr, i + 1);
+        }
+    }
+    return Sum(arr.flat(Infinity), 0)
+
 }
 
 export function flattenArray(arr) {
-  // Your code here
+    // Your code here
+    if (!Array.isArray(arr) || arr.length === 0) {
+        return []
+    }
+    return arr.flat(Infinity);
 }
 
 export function isPalindrome(str) {
-  // Your code here
+    if (typeof str !== "string") {
+        return false;
+    }
+    // Your code here
+    function checker(str, start, last) {
+        if (start >= last) {
+            return true
+        }
+        if (str[start] === str[last]) {
+            return checker(str, start + 1, last - 1)
+        }
+        else {
+            return false;
+        }
+    }
+    return checker(str.toLowerCase(), 0, str.length - 1)
+
 }
 
 export function generatePattern(n) {
-  // Your code here
+    // Your code here
+    if (typeof n !== "number" || n <= 0 || !Number.isInteger(n)) {
+        return [];
+    }
+    function mhendi(arr, n, i) {
+
+        if (n <= 0) {
+            return arr;
+        }
+        if (n === i) {
+            arr = ["*".repeat(n)];
+        } else {
+            arr = ["*".repeat(n), ...arr, "*".repeat(n)];
+        }
+        return mhendi(arr, n - 1)
+    }
+    return mhendi([], n, n);
 }

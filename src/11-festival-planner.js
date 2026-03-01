@@ -49,5 +49,64 @@
  *   mgr.getUpcoming("2025-01-01", 1); // => [{ name: "Republic Day", ... }]
  */
 export function createFestivalManager() {
-  // Your code here
+    // Your code here
+    let festivals = 0;
+    let festivalNames = [];
+    function addFestival(name, date, type) {
+        let checked = /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date);
+        if (!checked || typeof type !== "string" || typeof name !== "string" || name === "" || type === "") {
+            return -1;
+        }
+        if ((type === "religious" || type === "national" || type === "cultural") && !festivalNames.some((n) => n.name === name) ) {
+            festivals++;
+            festivalNames.push({
+                name: name,
+                date: date,
+                type: type,
+            });
+            return festivals;
+        }
+        else {
+            return -1;
+        }
+    }
+    function removeFestival(name) {
+        if (festivalNames.some((n) => n.name === name)) {
+            festivalNames = festivalNames.filter((e) => (e.name !== name));
+            festivals--;
+            return true;
+        }
+        return false;
+    }
+    function getAll() {
+        return [...festivalNames];
+    }
+    function getByType(type) {
+        return festivalNames.filter(festival => festival.type === type);
+    }
+    function getUpcoming(currentDate, n = 3) {
+
+        // let refinedDate = Number(currentDate.split("-")[2]);
+        let AllupcomingFestivals = festivalNames.filter((e) => e.date >= currentDate).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+        let upcomingFestivals = [] , i =0;
+        while (i < n && i < AllupcomingFestivals.length) {
+            upcomingFestivals.push(AllupcomingFestivals[i]);
+            i++;
+        }
+        console.log(AllupcomingFestivals);
+        return upcomingFestivals.sort((a, b) => a.date - b.date);
+
+    }
+    function getCount() {
+        return festivals;
+    }
+
+    return {
+        addFestival,
+        removeFestival,
+        getAll,
+        getByType,
+        getUpcoming,
+        getCount,
+    }
 }

@@ -38,21 +38,67 @@
  *   // => { name: "Jadeja", strikeRate: 175, economy: 7.5, battingAvg: 28.57, isAllRounder: false }
  */
 export const calcStrikeRate = (runs, balls) => {
-  // Your code here
+    // Your code here
+    if (balls > 0 && runs >= 0 && typeof runs === "number" && typeof balls === "number") {
+        const fn = (runs, balls) => {
+            return Number(((runs / balls) * 100).toFixed(2))
+        };
+        return fn(runs, balls)
+    } else {
+        return 0;
+    }
 };
 
 export const calcEconomy = (runsConceded, overs) => {
-  // Your code here
+    // Your code here
+    if (typeof overs === "number" && typeof runsConceded === "number" && overs > 0 && runsConceded >= 0) {
+        const economyCalcolator = (runs, overs) => (Number((runs / overs).toFixed(2)));
+        return economyCalcolator(runsConceded , overs)
+    }
+    else {
+        return 0;
+    }
 };
 
 export const calcBattingAvg = (totalRuns, innings, notOuts = 0) => {
-  // Your code here
+    // Your code here
+    if (innings > 0 && notOuts >= 0 && innings !== notOuts && innings > notOuts) {
+        const battingAvgCalculator = (tr, inn, not) => (Number((tr / (inn - not)).toFixed(2)));
+        return battingAvgCalculator(totalRuns, innings, notOuts);
+    }
+    else {
+        return 0;
+    }
 };
 
 export const isAllRounder = (battingAvg, economy) => {
-  // Your code here
+    // Your code here
+    const allrounder = (bAvg, eco) => ((bAvg > 30 && eco < 8) ? true : false);
+    return allrounder(battingAvg , economy)
 };
 
 export const getPlayerCard = (player) => {
-  // Your code here
+    // Your code here
+    if (typeof player === "object" && player != null && !Array.isArray(player)) {
+        if (player.name) {
+            const strikeRate = (runs,balls)=>(Number(((runs/balls)*100).toFixed(2)))
+            const economy = (runs,over)=>(Number((runs/over).toFixed(2)))
+            const battingAvgCalculator = (totalruns, innings, notout) => (Number((totalruns / (innings - notout)).toFixed(2)));
+            const allrounder = (bAvg, eco) => ((bAvg > 30 && eco < 8) ? true : false);
+            return {
+                name : player.name,
+                strikeRate : strikeRate(player.runs , player.balls),
+                economy: economy(player.runsConceded , player.overs),
+                battingAvg : battingAvgCalculator(player.totalRuns , player.innings , player.notOuts),
+                isAllRounder:allrounder(player.battingAvg , player.economy),
+
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    else {
+        return null;
+    }
 };

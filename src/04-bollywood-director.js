@@ -45,13 +45,69 @@
  *   pricer("gold", true)  // => 200 * 1.5 * 1.3 = 390
  */
 export function createDialogueWriter(genre) {
-  // Your code here
+    let myGenre = {
+        "action": (hero, villain) => `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`,
+        "romance": (hero, villain) => `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`,
+        "comedy": (hero, villain) => `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`,
+        "drama": (hero, villain) => `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`,
+    }
+    if (!myGenre[genre]) {
+        return null;
+    }
+    return function (hero, villain) {
+        if (!hero || !villain) {
+            return "..."
+        }
+        return myGenre[genre](hero, villain)
+    }
+
 }
 
 export function createTicketPricer(basePrice) {
-  // Your code here
+    // Your code here
+    if (typeof basePrice !== "number" || basePrice <= 0) {
+        return null
+    }
+
+    return function (seatType, isWeekend = false) {
+        let baseCost = basePrice;
+        if (seatType === "silver") {
+            baseCost *= 1;
+        }
+        else if (seatType === "gold") {
+            baseCost *= 1.5;
+        }
+        else if (seatType === "platinum") {
+            baseCost *= 2;
+        } else {
+            return null
+        }
+        return isWeekend ? Math.round(baseCost * 1.3) : Math.round(baseCost);
+    }
+
 }
 
 export function createRatingCalculator(weights) {
-  // Your code here
+    // Your code here
+    if (typeof weights === "object" && !Array.isArray(weights) && weights !== null) {
+            return function (scores) {
+                if (typeof scores !== "object") {
+                    return null;
+                }
+                let avgSum = 0;
+                let count = 0;
+                for (const [key] of Object.entries(scores)) {
+                    if (Object.hasOwn(scores, key) && Object.hasOwn(weights, key)) {
+                        avgSum += scores[key] * weights[key];
+                        count++;
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                return avgSum;
+            }
+    } else {
+        return null;
+    }
 }

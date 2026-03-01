@@ -49,5 +49,63 @@
  *   // => { name: "Ram", area: "Dadar", total: 2, completed: 1, pending: 1, successRate: "50.00%" }
  */
 export function createDabbawala(name, area) {
-  // Your code here
+    // Your code here
+
+    let deliveries = []
+    let currentId = 0;
+    function addDelivery(from, to) {
+        if (!from || !to) {
+            return -1;
+        }
+        currentId++;
+        deliveries.push({
+            id: currentId,
+            from: from,
+            to: to,
+            status: "pending"
+        })
+        return currentId;
+
+    }
+    function completeDelivery(id) {
+        const delivery = deliveries.find((e) => e.id === id)
+        if (delivery && delivery.status === "pending") {
+            delivery.status = "complete";
+            return true;
+        }
+        return false;
+    }
+    function getActiveDeliveries() {
+        const filteredDelivery = deliveries.filter(delivery => delivery.status === "pending");
+        return [...filteredDelivery];
+    }
+    function getStats() {
+        let completed = deliveries.reduce((prev, curr) => curr.status === "complete" ? prev + 1 : prev, 0);
+        let total = deliveries.length;
+        let pending = deliveries.reduce((prev, curr) => curr.status === "pending" ? prev + 1 : prev, 0);
+        let successRate
+        if (total > 0) {
+            successRate = ((completed / total)*100).toFixed(2) + "%";
+        }
+        return {
+            name,
+            area,
+            total: total,
+            completed: completed,
+            pending: pending,
+            successRate: total===0?"0.00%":successRate,
+        }
+    }
+    function reset() {
+        currentId = 0;
+        deliveries = [];
+        return true;
+    }
+    return {
+        addDelivery,
+        completeDelivery,
+        getActiveDeliveries,
+        getStats,
+        reset
+    };
 }
